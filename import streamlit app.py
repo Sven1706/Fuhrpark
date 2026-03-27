@@ -1,3 +1,18 @@
+# 1. Definiere, wer der Chef ist (deine E-Mail von GitHub/Streamlit)
+ADMIN_EMAIL = "deine-email@beispiel.de" 
+
+# 2. Prüfe, wer gerade eingeloggt ist
+user_email = st.experimental_user.email 
+
+# 3. Baue das Menü schlau auf
+menu = ["📊 Monitor", "📸 Schadensmeldung"]
+
+# Nur wenn DU es bist, kommt der Admin-Bereich dazu
+if user_email == ADMIN_EMAIL:
+    menu.append("🚜 Fahrzeugstamm (Admin)")
+    menu.append("⚙️ Einstellungen")
+
+choice = st.sidebar.radio("Menü:", menu)
 
 import streamlit as st
 import pandas as pd
