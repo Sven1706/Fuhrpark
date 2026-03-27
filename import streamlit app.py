@@ -109,3 +109,44 @@ elif choice == "🚜 Fahrzeugstamm (Admin)":
                 st.rerun()
             else:
                 st.error("Name fehlt!")
+import streamlit as st
+import pandas as pd
+from datetime import datetime
+from sqlalchemy import text # <--- Das ist neu und wichtig!
+
+# --- 1. ADMIN-CHECK ---
+ADMIN_EMAIL = "deine-email@beispiel.de" 
+
+try:
+    user_email = st.user.email 
+except:
+    user_email = None
+
+# --- 2. DATENBANK (ERWEITERN STATT LÖSCHEN) ---
+def get_conn():
+    return st.connection('werkstatt_db', type='sql')
+
+def init_db():
+    conn = get_conn()
+    with conn.session as s:
+        # Erstellt Tabellen nur, wenn sie noch nicht da sind
+        s.execute(text("CREATE TABLE IF NOT EXISTS fahrzeuge (id INTEGER PRIMARY KEY, name TEXT UNIQUE, stand REAL, einheit TEXT);"))
+        s.execute(text("CREATE TABLE IF NOT EXISTS schaeden (id INTEGER PRIMARY KEY, zeitpunkt TEXT, fz_name TEXT, info TEXT, status TEXT DEFAULT 'Offen');"))
+        
+        # Versucht die Spalte 'typ' hinzuzufügen, falls sie noch nicht existiert
+        try:
+            s.execute(text("ALTER TABLE fahrzeuge ADD COLUMN typ TEXT;"))
+        except:
+            pass # Spalte existiert schon, alles okay!
+        s.commit()
+
+init_db()
+
+# --- 3. MENÜ ---
+is_admin = (user_email == ADMIN_EMAIL)
+menu = ["📊 Monitor", "📸 Schadensmeldung"]
+if is_admin:
+    menu.append("🚜 Fahrzeugstamm (Admin)")
+
+st.sidebar.title("🛠️ Werkstatt-System")
+choice = st.sidebar.radio("Navigation:", menu)
