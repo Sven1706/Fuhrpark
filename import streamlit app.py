@@ -1,5 +1,11 @@
-streamlit
-sqlalchemy
+import streamlit as st
+import pandas as pd
+from datetime import datetime
+from sqlalchemy import text # Wichtig für die Datenbankbefehle!
+
+# Ab hier geht dein restlicher Code weiter...
+
+
 import streamlit as st
 import pandas as pd
 from datetime import datetime
