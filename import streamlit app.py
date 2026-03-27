@@ -6,8 +6,13 @@ from datetime import datetime
 # Trage hier DEINE E-Mail ein, um Admin-Rechte zu haben
 ADMIN_EMAIL = "deine-email@beispiel.de" 
 
-# Prüfen, wer eingeloggt ist (Streamlit Cloud erkennt das automatisch)
-user_email = st.experimental_user.email 
+# Prüfen, wer eingeloggt ist (Sichere Variante)
+try:
+    # Neuer Standard in Streamlit
+    user_email = st.user.email 
+except:
+    # Falls man lokal testet oder nicht eingeloggt ist
+    user_email = None 
 
 # --- 2. DATENBANK-SETUP ---
 # Wir nutzen die "Permanent-Datei" über die Streamlit Secrets (wie besprochen)
