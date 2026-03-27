@@ -40,3 +40,15 @@ if user_email:
 # --- 4. LOGIK: SCHADENSMELDUNG (MOBIL OPTIMIERT) ---
 if choice == "📸 Schadensmeldung":
     st.header("📸 Neuen Schaden melden")
+def init_db():
+    conn = get_conn()
+    with conn.session as s:
+        s.execute("CREATE TABLE IF NOT EXISTS fahrzeuge (id INTEGER PRIMARY KEY, name TEXT UNIQUE, stand REAL, einheit TEXT);")
+        # DIESE ZEILE FÜGT DIE TYP-SPALTE NACHTRÄGLICH EIN (falls sie fehlt):
+        try:
+            s.execute("ALTER TABLE fahrzeuge ADD COLUMN typ TEXT;")
+        except:
+            pass # Falls die Spalte schon da ist, ignoriere den Fehler
+        
+        s.execute("CREATE TABLE IF NOT EXISTS schaeden (id INTEGER PRIMARY KEY, zeitpunkt TEXT, fz_name TEXT, info TEXT, status TEXT DEFAULT 'Offen');")
+        s.commit()
