@@ -12,6 +12,16 @@ try:
     user_email = st.user.email 
 except:
     user_email = None
+# TEST-ANZEIGE: Zeigt dir deine E-Mail in der Seitenleiste
+if user_email:
+    st.sidebar.warning(f"Deine erkannte E-Mail: {user_email}")
+else:
+    st.sidebar.error("Keine E-Mail erkannt (Gastmodus)")
+# TEST-ANZEIGE: Zeigt dir deine E-Mail in der Seitenleiste
+if user_email:
+    st.sidebar.warning(f"Deine erkannte E-Mail: {user_email}")
+else:
+    st.sidebar.error("Keine E-Mail erkannt (Gastmodus)")
 
 # --- 2. DATENBANK ---
 def get_conn():
