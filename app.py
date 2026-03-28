@@ -1,7 +1,11 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from sqlalchemy import text
+try:
+    from sqlalchemy import text
+except ImportError:
+    st.error("Das Paket 'sqlalchemy' fehlt noch. Bitte prüfe deine requirements.txt!")
+
 
 # --- 1. EINSTELLUNGEN ---
 # WICHTIG: Hier deine E-Mail-Adresse eintragen!
